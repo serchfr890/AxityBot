@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CoreBot.Profiles
 {
-    public class SapProfile
+    public class UserProfile
     {
         public string UserId { get; set; }
         public int EmployeeId { get; set; }

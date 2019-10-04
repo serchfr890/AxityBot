@@ -13,12 +13,12 @@ namespace CoreBot.Dialogs.PasswordResetDialogs
 {
     public class PasswordResetSapDialog : ComponentDialog
     {
-        private readonly IStatePropertyAccessor<SapProfile> _passwordResetSapAccesor;
+        private readonly IStatePropertyAccessor<UserProfile> _userProfileAccesor;
         private readonly ILogger<PasswordResetSapDialog> _logger;
 
         public PasswordResetSapDialog(UserState userState, ILogger<PasswordResetSapDialog> logger) : base(nameof(PasswordResetSapDialog))
         {
-            _passwordResetSapAccesor = userState.CreateProperty<SapProfile>(nameof(SapProfile));
+            _userProfileAccesor = userState.CreateProperty<UserProfile>(nameof(UserProfile));
             _logger = logger;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             var waterfallsStepsSap = new WaterfallStep[]
@@ -76,13 +76,13 @@ namespace CoreBot.Dialogs.PasswordResetDialogs
         {
             stepContext.Values["BirtDate"] = stepContext.Result;
             //await stepContext.Context.SendActivityAsync(MessageFactory.Text(""), cancellationToken);
-            var sapProfile = await _passwordResetSapAccesor.GetAsync(stepContext.Context, () => new SapProfile(), cancellationToken);
+            var UserProfile = await _userProfileAccesor.GetAsync(stepContext.Context, () => new UserProfile(), cancellationToken);
             try
             {
-                sapProfile.UserId = stepContext.Values["UserId"].ToString().ToLower();
-                sapProfile.EmployeeId = Int32.Parse(stepContext.Values["EmployeeId"].ToString());
-                sapProfile.AdmisionDate = DateTime.Parse(stepContext.Values["AdmisionDate"].ToString(), new CultureInfo("es-MX")).ToString("dd-MM-yyyy");
-                sapProfile.BirthDate = DateTime.Parse(stepContext.Values["BirtDate"].ToString(), new CultureInfo("es-MX")).ToString("dd-MM-yyyy");
+                UserProfile.UserId = stepContext.Values["UserId"].ToString().ToLower();
+                UserProfile.EmployeeId = Int32.Parse(stepContext.Values["EmployeeId"].ToString());
+                UserProfile.AdmisionDate = DateTime.Parse(stepContext.Values["AdmisionDate"].ToString(), new CultureInfo("es-MX")).ToString("dd-MM-yyyy");
+                UserProfile.BirthDate = DateTime.Parse(stepContext.Values["BirtDate"].ToString(), new CultureInfo("es-MX")).ToString("dd-MM-yyyy");
             } catch (Exception e)
             {
                 _logger.LogInformation($"Error SAP Dialog: {e.StackTrace}");
