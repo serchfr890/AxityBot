@@ -20,13 +20,15 @@ namespace CoreBot.Dialogs
         private readonly ILogger<InitialDialog> _logger;
         public InitialDialog(BotAxityRecognizer luisRecognizer, ILogger<InitialDialog> logger, 
             PasswordResetSapDialog passwordResetSapDialog,
-            PasswordResetTaoDialog passwordResetTaoDialog) : base (nameof(InitialDialog))
+            PasswordResetTaoDialog passwordResetTaoDialog,
+            PasswordResetAdDialog passwordResetAdDialog) : base (nameof(InitialDialog))
         {
             _luisRecognizer = luisRecognizer;
             _logger = logger;
 
             AddDialog(passwordResetSapDialog);
             AddDialog(passwordResetTaoDialog);
+            AddDialog(passwordResetAdDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
@@ -63,7 +65,7 @@ namespace CoreBot.Dialogs
                             case "SAP":
                                 return await stepContext.BeginDialogAsync(nameof(PasswordResetSapDialog), null, cancellationToken);
                             case "AD":
-                                break;
+                                return await stepContext.BeginDialogAsync(nameof(PasswordResetAdDialog), null, cancellationToken);
                             case "TAO":
                                 return await stepContext.BeginDialogAsync(nameof(PasswordResetTaoDialog), null, cancellationToken);
                             default:
