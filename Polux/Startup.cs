@@ -42,6 +42,7 @@ namespace Microsoft.BotBuilderSamples
             // The MainDialog that will be run by the bot.
             services.AddSingleton<InitialDialog>();
             services.AddSingleton<PasswordResetSapDialog>();
+            services.AddSingleton<PasswordResetTaoDialog>();
 
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             services.AddTransient<IBot, AxityBot<InitialDialog>>();

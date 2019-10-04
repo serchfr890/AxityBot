@@ -18,12 +18,15 @@ namespace CoreBot.Dialogs
     {
         private readonly BotAxityRecognizer _luisRecognizer;
         private readonly ILogger<InitialDialog> _logger;
-        public InitialDialog(BotAxityRecognizer luisRecognizer, ILogger<InitialDialog> logger, PasswordResetSapDialog passwordResetSapDialog) : base (nameof(InitialDialog))
+        public InitialDialog(BotAxityRecognizer luisRecognizer, ILogger<InitialDialog> logger, 
+            PasswordResetSapDialog passwordResetSapDialog,
+            PasswordResetTaoDialog passwordResetTaoDialog) : base (nameof(InitialDialog))
         {
             _luisRecognizer = luisRecognizer;
             _logger = logger;
 
             AddDialog(passwordResetSapDialog);
+            AddDialog(passwordResetTaoDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
@@ -46,15 +49,12 @@ namespace CoreBot.Dialogs
                 switch (luisResult.TopIntent().intent)
                 {
                     case BotAxity.Intent.PasswordReset:
-                        //return await stepContext.BeginDialogAsync(nameof(PasswordResetSapDialog), cancellationToken);
-
                         string modulo;
                         try
-                        {
-                            modulo = luisResult.Entities.Modulo[0][0];
-                        }
+                        { modulo = luisResult.Entities.Modulo[0][0]; }
                         catch (Exception e)
                         {
+                            _logger.LogInformation($"Error en InitialDialog.cs {e.StackTrace}");
                             modulo = "";
                         }
 
@@ -62,11 +62,10 @@ namespace CoreBot.Dialogs
                         {
                             case "SAP":
                                 return await stepContext.BeginDialogAsync(nameof(PasswordResetSapDialog), null, cancellationToken);
-                                
                             case "AD":
                                 break;
                             case "TAO":
-                                break;
+                                return await stepContext.BeginDialogAsync(nameof(PasswordResetTaoDialog), null, cancellationToken);
                             default:
                                 await stepContext.Context.SendActivityAsync(MessageFactory.Text("OK, Por favor indicame el modulo"), cancellationToken);
                                 break;

@@ -76,13 +76,13 @@ namespace CoreBot.Dialogs.PasswordResetDialogs
         {
             stepContext.Values["BirtDate"] = stepContext.Result;
             //await stepContext.Context.SendActivityAsync(MessageFactory.Text(""), cancellationToken);
-            var UserProfile = await _userProfileAccesor.GetAsync(stepContext.Context, () => new UserProfile(), cancellationToken);
+            var userProfile = await _userProfileAccesor.GetAsync(stepContext.Context, () => new UserProfile(), cancellationToken);
             try
             {
-                UserProfile.UserId = stepContext.Values["UserId"].ToString().ToLower();
-                UserProfile.EmployeeId = Int32.Parse(stepContext.Values["EmployeeId"].ToString());
-                UserProfile.AdmisionDate = DateTime.Parse(stepContext.Values["AdmisionDate"].ToString(), new CultureInfo("es-MX")).ToString("dd-MM-yyyy");
-                UserProfile.BirthDate = DateTime.Parse(stepContext.Values["BirtDate"].ToString(), new CultureInfo("es-MX")).ToString("dd-MM-yyyy");
+                userProfile.UserId = stepContext.Values["UserId"].ToString().ToLower();
+                userProfile.EmployeeId = Int32.Parse(stepContext.Values["EmployeeId"].ToString());
+                userProfile.AdmisionDate = DateTime.Parse(stepContext.Values["AdmisionDate"].ToString(), new CultureInfo("es-MX")).ToString("dd-MM-yyyy");
+                userProfile.BirthDate = DateTime.Parse(stepContext.Values["BirtDate"].ToString(), new CultureInfo("es-MX")).ToString("dd-MM-yyyy");
             } catch (Exception e)
             {
                 _logger.LogInformation($"Error SAP Dialog: {e.StackTrace}");
