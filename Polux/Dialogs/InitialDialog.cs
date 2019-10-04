@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using System.Threading;
 using CoreBot.CognitiveModels;
 using Microsoft.Bot.Schema;
-using CoreBot.Models;
 using CoreBot.Dialogs.PasswordResetDialogs;
 
 namespace CoreBot.Dialogs

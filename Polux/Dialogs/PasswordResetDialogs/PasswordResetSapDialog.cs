@@ -81,8 +81,8 @@ namespace CoreBot.Dialogs.PasswordResetDialogs
             {
                 sapProfile.UserId = stepContext.Values["UserId"].ToString().ToLower();
                 sapProfile.EmployeeId = Int32.Parse(stepContext.Values["EmployeeId"].ToString());
-                sapProfile.AdmisionDate = DateTime.Parse(stepContext.Values["AdmisionDate"].ToString(), new CultureInfo("es-MX")).ToString("dd-M-yyyy");
-                sapProfile.BirthDate = DateTime.Parse(stepContext.Values["BirtDate"].ToString(), new CultureInfo("es-MX")).ToString("dd-M-yyyy");
+                sapProfile.AdmisionDate = DateTime.Parse(stepContext.Values["AdmisionDate"].ToString(), new CultureInfo("es-MX")).ToString("dd-MM-yyyy");
+                sapProfile.BirthDate = DateTime.Parse(stepContext.Values["BirtDate"].ToString(), new CultureInfo("es-MX")).ToString("dd-MM-yyyy");
             } catch (Exception e)
             {
                 _logger.LogInformation($"Error SAP Dialog: {e.StackTrace}");
