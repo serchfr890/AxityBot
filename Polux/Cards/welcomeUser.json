@@ -1,0 +1,28 @@
+{
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "Image",
+      "altText": "Imgen de Chatbot",
+      "url": "https://image.freepik.com/vector-gratis/lindo-bot-decir-usuarios-hola-chatbot-saluda-consulta-online_80328-195.jpg",
+      "spacing": "None",
+      "separator": true,
+      "horizontalAlignment": "Center",
+      "width": "200px",
+      "style": "Person",
+      "height": "200px"
+    },
+    {
+      "type": "TextBlock",
+      "text": "Hola. Soy un soy un asistente virtual y puedo ayudate hacer lo siguiente.",
+      "wrap": true,
+      "horizontalAlignment": "Center",
+      "spacing": "None",
+      "size": "Medium",
+      "weight": "Bolder",
+      "color": "Good"
+    }
+  ],
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}

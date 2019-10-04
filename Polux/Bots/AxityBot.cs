@@ -63,20 +63,15 @@ namespace CoreBot.Bots
         // Load attachment from embedded resource.
         private Attachment CreateAdaptiveCardAttachment()
         {
-            var cardResourcePath = "CoreBot.Cards.welcomeCard.json";
+            string[] paths = { ".", "Cards", "welcomeUser.json" };
+            var adaptiveCardJson = File.ReadAllText(Path.Combine(paths));
 
-            using (var stream = GetType().Assembly.GetManifestResourceStream(cardResourcePath))
+            var adaptiveCardAttachment = new Attachment()
             {
-                using (var reader = new StreamReader(stream))
-                {
-                    var adaptiveCard = reader.ReadToEnd();
-                    return new Attachment()
-                    {
-                        ContentType = "application/vnd.microsoft.card.adaptive",
-                        Content = JsonConvert.DeserializeObject(adaptiveCard),
-                    };
-                }
-            }
-        }
+                ContentType = "application/vnd.microsoft.card.adaptive",
+                Content = JsonConvert.DeserializeObject(adaptiveCardJson)
+            };
+            return adaptiveCardAttachment;
+        } 
     }
 }
