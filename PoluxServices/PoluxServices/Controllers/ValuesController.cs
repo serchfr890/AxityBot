@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PoluxServices.DataBase;
+using PoluxServices.Models;
 
 namespace PoluxServices.Controllers
 {
@@ -26,8 +28,10 @@ namespace PoluxServices.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] SAPCollection sAPCollection)
         {
+            var jfj = sAPCollection;
+
         }
 
         // PUT api/values/5
