@@ -8,7 +8,6 @@
       "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQskusEUISChV2qPZT0DExAsv6Cjzc3fX4Ps4WX4mF1SSnfEswMg",
       "spacing": "Small",
       "horizontalAlignment": "Center",
-      "height": "stretch",
       "size": "Large",
       "style": "Person"
     },
@@ -40,21 +39,15 @@
       "id": "Comments",
       "spacing": "Medium",
       "isMultiline": true
-    },
-    {
-      "type": "ActionSet",
-      "id": "OK",
-      "actions": [
-        {
-          "type": "Action.Submit",
-          "title": "Enviar",
-          "style": "positive"
-        }
-      ],
-      "horizontalAlignment": "Left",
-      "spacing": "Medium",
-      "height": "stretch"
     }
   ],
-  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Enviar",
+      "style": "positive",
+      "id": "OK"
+    }
+  ]
 }

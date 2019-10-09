@@ -78,7 +78,7 @@ namespace CoreBot.Dialogs.FormDialog
             {
                 //Si uno de los campos está vacio, regresa al dialogo donde se manda el formulario
                 stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] - 2;
-                return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("Lo siento. Dejaste campos algunos campos vacios. ¿Quieres volver a llenar el formulario?") }, cancellationToken);
+                return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("Lo siento. Dejaste algunos campos vacios. ¿Quieres volver a llenar el formulario?") }, cancellationToken);
             }
         }
 
@@ -96,7 +96,7 @@ namespace CoreBot.Dialogs.FormDialog
                 }
                 catch(ArgumentException e)
                 {
-                    await stepContext.Context.SendActivityAsync(MessageFactory.Text("Hubo un error al enviar el correo. Por favor intentalo nuevamente."), cancellationToken);
+                    await stepContext.Context.SendActivityAsync(MessageFactory.Text("Hubo un error al enviar el correo. Por favor intentalo nuevamente: " + e.StackTrace), cancellationToken);
                     return await stepContext.EndDialogAsync();
                 }
                 
