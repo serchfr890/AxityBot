@@ -11,6 +11,8 @@ using CoreBot.CognitiveServices;
 using CoreBot.Bots;
 using CoreBot.Dialogs;
 using CoreBot.Dialogs.PasswordResetDialogs;
+using CoreBot.Dialogs.FormDialog;
+
 namespace Microsoft.BotBuilderSamples
 {
     public class Startup
@@ -44,6 +46,7 @@ namespace Microsoft.BotBuilderSamples
             services.AddSingleton<PasswordResetSapDialog>();
             services.AddSingleton<PasswordResetTaoDialog>();
             services.AddSingleton<PasswordResetAdDialog>();
+            services.AddSingleton<FormDialogFromAdativeCard>();
 
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             services.AddTransient<IBot, AxityBot<InitialDialog>>();

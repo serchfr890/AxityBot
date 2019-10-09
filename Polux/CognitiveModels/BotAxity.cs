@@ -17,6 +17,7 @@ namespace CoreBot.CognitiveModels
         public enum Intent
         {
             PasswordReset,
+            ComprarProductos,
             None
         }
         public Dictionary<Intent, IntentScore> Intents;

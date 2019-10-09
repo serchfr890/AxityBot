@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBot.Models;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
@@ -40,7 +41,12 @@ namespace CoreBot.Bots
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
             Logger.LogInformation("Running dialog with Message Activity.");
-
+            if (string.IsNullOrWhiteSpace(turnContext.Activity.Text) && turnContext.Activity.Value != null)
+            {
+                /*var information = JsonConvert.DeserializeObject<Form>(JsonConvert.SerializeObject(turnContext.Activity.Value,
+                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));*/
+                turnContext.Activity.Text = turnContext.Activity.Value.ToString();
+            }
             // Run the Dialog with the new message Activity.
             await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>("DialogState"), cancellationToken);
         }

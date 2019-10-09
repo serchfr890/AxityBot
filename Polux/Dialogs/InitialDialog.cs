@@ -11,6 +11,10 @@ using System.Threading;
 using CoreBot.CognitiveModels;
 using Microsoft.Bot.Schema;
 using CoreBot.Dialogs.PasswordResetDialogs;
+using CoreBot.Dialogs.FormDialog;
+using Newtonsoft.Json;
+using CoreBot.Models;
+using System.IO;
 
 namespace CoreBot.Dialogs
 {
@@ -21,14 +25,16 @@ namespace CoreBot.Dialogs
         public InitialDialog(BotAxityRecognizer luisRecognizer, ILogger<InitialDialog> logger, 
             PasswordResetSapDialog passwordResetSapDialog,
             PasswordResetTaoDialog passwordResetTaoDialog,
-            PasswordResetAdDialog passwordResetAdDialog) : base (nameof(InitialDialog))
+            PasswordResetAdDialog passwordResetAdDialog,
+            FormDialogFromAdativeCard formDialogFromAdativeCard) : base (nameof(InitialDialog))
         {
             _luisRecognizer = luisRecognizer;
             _logger = logger;
-
+            AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(passwordResetSapDialog);
             AddDialog(passwordResetTaoDialog);
             AddDialog(passwordResetAdDialog);
+            AddDialog(formDialogFromAdativeCard);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
@@ -40,13 +46,16 @@ namespace CoreBot.Dialogs
 
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
+
             if ( !_luisRecognizer.IsConfigured)
             {
                 await stepContext.Context.SendActivityAsync(
                     MessageFactory.Text("NOTE: LUIS is not configured. To enable all capabilities, add 'LuisAppId', 'LuisAPIKey' and 'LuisAPIHostName' to the appsettings.json file.", inputHint: InputHints.IgnoringInput), cancellationToken);
+                
                 return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
             }else
             {
+                
                 var luisResult = await _luisRecognizer.RecognizeAsync<BotAxity>(stepContext.Context, cancellationToken);
                 switch (luisResult.TopIntent().intent)
                 {
@@ -73,52 +82,17 @@ namespace CoreBot.Dialogs
                                 break;
                         }
                         break;
+                    case BotAxity.Intent.ComprarProductos:
+                        return await stepContext.BeginDialogAsync(nameof(FormDialogFromAdativeCard), null, cancellationToken);
                     case BotAxity.Intent.None:
                         break;
                 }
             }
-            return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
-
-
-
-            /*else
+            //return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions
             {
-
-                 var luisResult = await _luisRecognizer.RecognizeAsync<BotAxity>(stepContext.Context, cancellationToken);
-                 //return await stepContext.BeginDialogAsync(nameof(PasswordResetSapDialog), cancellationToken);
-
-                 switch (luisResult.TopIntent().intent)
-                 {
-                     case BotAxity.Intent.PasswordReset:
-                         return await stepContext.BeginDialogAsync(nameof(PasswordResetSapDialog), cancellationToken);
-
-                    string modulo;
-                    try
-                    {
-                        modulo = luisResult.Entities.Modulo[0][0];
-                    } catch (Exception e)
-                    {
-                        modulo = "";
-                    }
-
-                    switch (modulo)
-                    {
-                        case "SAP":
-                            return await stepContext.BeginDialogAsync(nameof(PasswordResetSapDialog), null, cancellationToken);
-                            break;
-                        case "AD":
-                            break;
-                        case "TAO":
-                            break;
-                        default:
-                            await stepContext.Context.SendActivityAsync(MessageFactory.Text("OK, Por favor indicame el modulo"), cancellationToken);
-                            break;
-                    }
-                    break;
-                    case BotAxity.Intent.None:
-                         break;
-                 }*/
-
+                Prompt = MessageFactory.Text(" dfgdf ")
+            }, cancellationToken);
 
         }
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)

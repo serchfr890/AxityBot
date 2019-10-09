@@ -16,27 +16,30 @@
       "type": "Input.Text",
       "placeholder": "Ingrese su nombre",
       "id": "Name",
-      "maxLength": 4,
+      "spacing": "Medium",
       "separator": true
     },
     {
       "type": "Input.Text",
       "placeholder": "Ingrese su correo electronico",
       "id": "Email",
-      "style": "Email"
+      "style": "Email",
+      "spacing": "Medium"
     },
     {
-      "type": "Input.Number",
+      "type": "Input.Text",
       "placeholder": "Ingrese su numero de telefono",
       "id": "Phone",
-      "value": "",
-      "min": 1,
-      "max": 10
+      "style": "Tel",
+      "maxLength": 10,
+      "spacing": "Medium"
     },
     {
       "type": "Input.Text",
       "placeholder": "Descripcion de los  productos que desea comprar",
-      "id": "Comentarios"
+      "id": "Comments",
+      "spacing": "Medium",
+      "isMultiline": true
     },
     {
       "type": "ActionSet",
