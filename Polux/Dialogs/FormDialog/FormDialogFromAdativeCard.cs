@@ -105,7 +105,7 @@ namespace CoreBot.Dialogs.FormDialog
             }
             else
             {
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text("Decidiste no enviar el correo"), cancellationToken);
+                await stepContext.Context.SendActivityAsync(MessageFactory.Text("OK espero que te vuelvas a comunicar pronto."), cancellationToken);
                 return await stepContext.EndDialogAsync();
             }
             

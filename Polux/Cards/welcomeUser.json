@@ -15,7 +15,7 @@
     },
     {
       "type": "TextBlock",
-      "text": "Hola. Soy un soy un asistente virtual y puedo ayudate hacer lo siguiente.",
+      "text": "Hola!!! Soy un soy un asistente virtual...",
       "wrap": true,
       "horizontalAlignment": "Center",
       "spacing": "None",

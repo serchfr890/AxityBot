@@ -43,8 +43,6 @@ namespace CoreBot.Bots
             Logger.LogInformation("Running dialog with Message Activity.");
             if (string.IsNullOrWhiteSpace(turnContext.Activity.Text) && turnContext.Activity.Value != null)
             {
-                /*var information = JsonConvert.DeserializeObject<Form>(JsonConvert.SerializeObject(turnContext.Activity.Value,
-                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));*/
                 turnContext.Activity.Text = turnContext.Activity.Value.ToString();
             }
             // Run the Dialog with the new message Activity.
@@ -62,6 +60,7 @@ namespace CoreBot.Bots
                     var welcomeCard = CreateAdaptiveCardAttachment();
                     var response = MessageFactory.Attachment(welcomeCard);
                     await turnContext.SendActivityAsync(response, cancellationToken);
+                    await SendSuggestedActionsAsync(turnContext, cancellationToken);
                 }
             }
         }
@@ -78,6 +77,21 @@ namespace CoreBot.Bots
                 Content = JsonConvert.DeserializeObject(adaptiveCardJson)
             };
             return adaptiveCardAttachment;
-        } 
+        }
+
+        private static async Task SendSuggestedActionsAsync(ITurnContext turnContext, CancellationToken cancellationToken)
+        {
+            var reply = MessageFactory.Text("Esto es lo que te puedo ayudar. Por favor elije una opcion.");
+
+            reply.SuggestedActions = new SuggestedActions()
+            {
+                Actions = new List<CardAction>()
+                {
+                    new CardAction() { Title = "Passwordreset SAP,TAP y AD", Type = ActionTypes.ImBack, Value = "Cambiar contraseña" },
+                    new CardAction() { Title = "Comprar productos de Sigma Alimentos", Type = ActionTypes.ImBack, Value = "Comprar productos" }
+                },
+            };
+            await turnContext.SendActivityAsync(reply, cancellationToken);
+        }
     }
 }

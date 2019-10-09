@@ -31,14 +31,15 @@ namespace CoreBot.Dialogs
             _luisRecognizer = luisRecognizer;
             _logger = logger;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
+            AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));
             AddDialog(passwordResetSapDialog);
             AddDialog(passwordResetTaoDialog);
             AddDialog(passwordResetAdDialog);
             AddDialog(formDialogFromAdativeCard);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
-                IntroStepAsync,
-                FinalStepAsync
+                IntroStepAsync
+               // FinalStepAsync
             }));
             
             InitialDialogId = nameof(WaterfallDialog);
@@ -78,7 +79,7 @@ namespace CoreBot.Dialogs
                             case "TAO":
                                 return await stepContext.BeginDialogAsync(nameof(PasswordResetTaoDialog), null, cancellationToken);
                             default:
-                                await stepContext.Context.SendActivityAsync(MessageFactory.Text("OK, Por favor indicame el modulo"), cancellationToken);
+                                await SendSuggestedActionsModuleAsync(stepContext.Context, cancellationToken);
                                 break;
                         }
                         break;
@@ -88,16 +89,23 @@ namespace CoreBot.Dialogs
                         break;
                 }
             }
-            //return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions
-            {
-                Prompt = MessageFactory.Text(" dfgdf ")
-            }, cancellationToken);
+            return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
 
         }
-        private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private static async Task SendSuggestedActionsModuleAsync(ITurnContext turnContext, CancellationToken cancellationToken)
         {
-            return await stepContext.EndDialogAsync(null, cancellationToken);
+            var reply = MessageFactory.Text("OK, indícame el modulo por favor.");
+
+            reply.SuggestedActions = new SuggestedActions()
+            {
+                Actions = new List<CardAction>()
+                {
+                    new CardAction() { Title = "SAP", Type = ActionTypes.ImBack, Value = "SAP" },
+                    new CardAction() { Title = "Active Directory", Type = ActionTypes.ImBack, Value = "AD" },
+                    new CardAction() { Title = "Succces Factor", Type = ActionTypes.ImBack, Value = "TAO" },
+                },
+            };
+            await turnContext.SendActivityAsync(reply, cancellationToken);
         }
     }
 }
