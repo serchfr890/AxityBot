@@ -10,6 +10,9 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
+using System.Net.Http;
+using Microsoft.Bot.Builder.AI.QnA;
 
 namespace CoreBot.Bots
 {
@@ -20,13 +23,20 @@ namespace CoreBot.Bots
         protected readonly BotState ConversationState;
         protected readonly BotState UserState;
         protected readonly ILogger Logger;
+        private readonly IConfiguration _configuration;
 
-        public AxityBot(ConversationState conversationState, UserState userState, T dialog, ILogger<AxityBot<T>> logger)
+
+        public AxityBot(ConversationState conversationState, 
+            UserState userState, 
+            T dialog, 
+            ILogger<AxityBot<T>> logger,
+            IConfiguration configuration)
         {
             ConversationState = conversationState;
             UserState = userState;
             Dialog = dialog;
             Logger = logger;
+            _configuration = configuration;
         }
 
        public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
@@ -45,6 +55,8 @@ namespace CoreBot.Bots
             {
                 turnContext.Activity.Text = turnContext.Activity.Value.ToString();
             }
+
+
             // Run the Dialog with the new message Activity.
             await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>("DialogState"), cancellationToken);
         }

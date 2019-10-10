@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
-using Microsoft.Bot.Builder.AI.Luis;
 using Microsoft.Bot.Builder.Dialogs;
 using CoreBot.CognitiveServices;
 using Microsoft.Extensions.Logging;
@@ -12,9 +11,9 @@ using CoreBot.CognitiveModels;
 using Microsoft.Bot.Schema;
 using CoreBot.Dialogs.PasswordResetDialogs;
 using CoreBot.Dialogs.FormDialog;
-using Newtonsoft.Json;
-using CoreBot.Models;
-using System.IO;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Bot.Builder.AI.QnA;
+using Newtonsoft.Json.Linq;
 
 namespace CoreBot.Dialogs
 {
@@ -22,7 +21,11 @@ namespace CoreBot.Dialogs
     {
         private readonly BotAxityRecognizer _luisRecognizer;
         private readonly ILogger<InitialDialog> _logger;
-        public InitialDialog(BotAxityRecognizer luisRecognizer, ILogger<InitialDialog> logger, 
+        private readonly IConfiguration _configuration;
+
+        public InitialDialog(BotAxityRecognizer luisRecognizer,
+            ILogger<InitialDialog> logger,
+            IConfiguration configuration,
             PasswordResetSapDialog passwordResetSapDialog,
             PasswordResetTaoDialog passwordResetTaoDialog,
             PasswordResetAdDialog passwordResetAdDialog,
@@ -30,6 +33,7 @@ namespace CoreBot.Dialogs
         {
             _luisRecognizer = luisRecognizer;
             _logger = logger;
+            _configuration = configuration;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));
             AddDialog(passwordResetSapDialog);
@@ -39,7 +43,6 @@ namespace CoreBot.Dialogs
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync
-               // FinalStepAsync
             }));
             
             InitialDialogId = nameof(WaterfallDialog);
@@ -85,7 +88,33 @@ namespace CoreBot.Dialogs
                         break;
                     case BotAxity.Intent.ComprarProductos:
                         return await stepContext.BeginDialogAsync(nameof(FormDialogFromAdativeCard), null, cancellationToken);
-                    case BotAxity.Intent.None:
+                    case BotAxity.Intent.QnAMakerSigma:
+                        //No colocar el IhttpFactoryclient
+
+                        var qnaMaker = new QnAMaker(new QnAMakerEndpoint
+                        {
+                            KnowledgeBaseId = _configuration["QnAKnowledgebaseId"],
+                            EndpointKey = _configuration["QnAAuthKey"],
+                            Host = _configuration["QnAEndpointHostName"]
+                        });
+
+                        var results = await qnaMaker.GetAnswersAsync(stepContext.Context);
+                        if (results != null && results.Length > 0)
+                        {
+                            try
+                            {
+                                JObject resultToJson = JObject.Parse(results[0].Answer);
+                                var answers = resultToJson.SelectToken("Message").ToList();
+                                foreach (var answer in answers)
+                                {
+                                    await stepContext.Context.SendActivityAsync(MessageFactory.Text(answer.ToString()), cancellationToken);
+                                }
+                            } catch
+                            {
+                                await stepContext.Context.SendActivityAsync(MessageFactory.Text(results[0].Answer), cancellationToken);
+                            }
+                            
+                        }
                         break;
                 }
             }

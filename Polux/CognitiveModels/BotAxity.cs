@@ -18,6 +18,7 @@ namespace CoreBot.CognitiveModels
         {
             PasswordReset,
             ComprarProductos,
+            QnAMakerSigma,
             None
         }
         public Dictionary<Intent, IntentScore> Intents;

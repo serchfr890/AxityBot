@@ -12,6 +12,7 @@ using CoreBot.Bots;
 using CoreBot.Dialogs;
 using CoreBot.Dialogs.PasswordResetDialogs;
 using CoreBot.Dialogs.FormDialog;
+using CoreBot.CognitiveServices;
 
 namespace Microsoft.BotBuilderSamples
 {
@@ -42,11 +43,13 @@ namespace Microsoft.BotBuilderSamples
             //services.AddSingleton<BookingDialog>();
 
             // The MainDialog that will be run by the bot.
+            //services.AddTransient<InitialDialog>();
             services.AddSingleton<InitialDialog>();
             services.AddSingleton<PasswordResetSapDialog>();
             services.AddSingleton<PasswordResetTaoDialog>();
             services.AddSingleton<PasswordResetAdDialog>();
             services.AddSingleton<FormDialogFromAdativeCard>();
+ 
 
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             services.AddTransient<IBot, AxityBot<InitialDialog>>();
