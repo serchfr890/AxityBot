@@ -14,6 +14,7 @@ using CoreBot.Dialogs.FormDialog;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Bot.Builder.AI.QnA;
 using Newtonsoft.Json.Linq;
+using CoreBot.Dialogs.TicketReview;
 
 namespace CoreBot.Dialogs
 {
@@ -29,7 +30,8 @@ namespace CoreBot.Dialogs
             PasswordResetSapDialog passwordResetSapDialog,
             PasswordResetTaoDialog passwordResetTaoDialog,
             PasswordResetAdDialog passwordResetAdDialog,
-            FormDialogFromAdativeCard formDialogFromAdativeCard) : base (nameof(InitialDialog))
+            FormDialogFromAdativeCard formDialogFromAdativeCard,
+            TicketReviewDialog ticketReviewDialog) : base (nameof(InitialDialog))
         {
             _luisRecognizer = luisRecognizer;
             _logger = logger;
@@ -40,6 +42,7 @@ namespace CoreBot.Dialogs
             AddDialog(passwordResetTaoDialog);
             AddDialog(passwordResetAdDialog);
             AddDialog(formDialogFromAdativeCard);
+            AddDialog(ticketReviewDialog);
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync
@@ -115,6 +118,21 @@ namespace CoreBot.Dialogs
                             }
                             
                         }
+                        break;
+                    case BotAxity.Intent.TicketReview:
+                        try
+                        {
+                            var Id_ticket = luisResult.Entities.Id_Ticket[0];
+                            await stepContext.Context.SendActivityAsync(MessageFactory.Text("Perfecto, voy a checarlo con el equipo, en breve te tendré una respuesta"), cancellationToken);
+                            await stepContext.BeginDialogAsync(nameof(TicketReviewDialog), Id_ticket, cancellationToken);
+                        } catch
+                        {
+                            await stepContext.Context.SendActivityAsync(MessageFactory.Text("Ok, pero olvidaste ingresar el Id_Ticket"), cancellationToken);
+                            await stepContext.Context.SendActivityAsync(MessageFactory.Text("Vuelve a intentarlo como el siguiente ejemplo \"Dime el estado de mi ticket 234NHJ2r\""), cancellationToken);
+                        }
+                        break;
+                    default:
+                        await stepContext.Context.SendActivityAsync(MessageFactory.Text("Lo siento no entendí, vuelve a intentarlo."), cancellationToken);
                         break;
                 }
             }

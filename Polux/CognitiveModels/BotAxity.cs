@@ -19,6 +19,7 @@ namespace CoreBot.CognitiveModels
             PasswordReset,
             ComprarProductos,
             QnAMakerSigma,
+            TicketReview,
             None
         }
         public Dictionary<Intent, IntentScore> Intents;
@@ -39,9 +40,23 @@ namespace CoreBot.CognitiveModels
                 public _InstanceLuisModulo _Instance;
             }
 
+            public string []Id_Ticket;
+
+            public class _InstanceLuisIdTicket
+            {
+                public InstanceData Id_Ticket;
+            }
+            public class LuisIdTicket
+            {
+                public string Id_Ticket;
+                [JsonProperty("$instance")]
+                public _InstanceLuisIdTicket _Instance;
+            }
+
             public class _Instance
             {
                 public InstanceData[] Modulo;
+                public InstanceData[] Id_Ticket;
             }
             [JsonProperty("$instance")]
             public _Instance _instance;
