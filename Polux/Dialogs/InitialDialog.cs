@@ -64,6 +64,7 @@ namespace CoreBot.Dialogs
             {
                 
                 var luisResult = await _luisRecognizer.RecognizeAsync<BotAxity>(stepContext.Context, cancellationToken);
+                var answerFromService = " ";
                 switch (luisResult.TopIntent().intent)
                 {
                     case BotAxity.Intent.PasswordReset:
@@ -131,6 +132,35 @@ namespace CoreBot.Dialogs
                             await stepContext.Context.SendActivityAsync(MessageFactory.Text("Vuelve a intentarlo como el siguiente ejemplo \"Dime el estado de mi ticket 234NHJ2r\""), cancellationToken);
                         }
                         break;
+                    case BotAxity.Intent.Pregunta_1:
+                        var DESC_ENTITY = luisResult.Entities.DESC_CUENTA[0];
+                        await stepContext.Context.SendActivityAsync(MessageFactory.Text("Entró a Pregunta 1"), cancellationToken);
+                        answerFromService = getAnswerFromQuestion1();
+                        break;
+                    case BotAxity.Intent.Pregunta_2:
+                        await stepContext.Context.SendActivityAsync(MessageFactory.Text("Entró a Pregunta 2"), cancellationToken);
+                        answerFromService = getAnswerFromQuestion2();
+                        break;
+                    case BotAxity.Intent.Pregunta_3:
+                        await stepContext.Context.SendActivityAsync(MessageFactory.Text("Entró a Pregunta 3"), cancellationToken);
+                        answerFromService = getAnswerFromQuestion3();
+                        break;
+                    case BotAxity.Intent.Pregunta_4:
+                        await stepContext.Context.SendActivityAsync(MessageFactory.Text("Entró a Pregunta 4"), cancellationToken);
+                        answerFromService = getAnswerFromQuestion4();
+                        break;
+                    case BotAxity.Intent.Pregunta_5:
+                        await stepContext.Context.SendActivityAsync(MessageFactory.Text("Entró a Pregunta 5"), cancellationToken);
+                        answerFromService = getAnswerFromQuestion5();
+                        break;
+                    case BotAxity.Intent.Pregunta_6:
+                        await stepContext.Context.SendActivityAsync(MessageFactory.Text("Entró a Pregunta 6"), cancellationToken);
+                        answerFromService = getAnswerFromQuestion6();
+                        break;
+                    case BotAxity.Intent.Pregunta_7:
+                        await stepContext.Context.SendActivityAsync(MessageFactory.Text("Entró a Pregunta 7"), cancellationToken);
+                        answerFromService = getAnswerFromQuestion7();
+                        break;
                     default:
                         await stepContext.Context.SendActivityAsync(MessageFactory.Text("Lo siento no entendí, vuelve a intentarlo."), cancellationToken);
                         break;
@@ -153,6 +183,41 @@ namespace CoreBot.Dialogs
                 },
             };
             await turnContext.SendActivityAsync(reply, cancellationToken);
+        }
+
+        private static string getAnswerFromQuestion1()
+        {
+            return "pregunta1";
+        }
+
+        private static string getAnswerFromQuestion2()
+        {
+            return "pregunta2";
+        }
+
+        private static string getAnswerFromQuestion3()
+        {
+            return "pregunta3";
+        }
+
+        private static string getAnswerFromQuestion4()
+        {
+            return "pregunta4";
+        }
+
+        private static string getAnswerFromQuestion5()
+        {
+            return "pregunta5";
+        }
+
+        private static string getAnswerFromQuestion6()
+        {
+            return "pregunta6";
+        }
+
+        private static string getAnswerFromQuestion7()
+        {
+            return "pregunta7";
         }
     }
 }

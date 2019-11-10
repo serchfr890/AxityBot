@@ -20,14 +20,34 @@ namespace CoreBot.CognitiveModels
             ComprarProductos,
             QnAMakerSigma,
             TicketReview,
+            Pregunta_1,
+            Pregunta_2,
+            Pregunta_3,
+            Pregunta_4,
+            Pregunta_5,
+            Pregunta_6,
+            Pregunta_7,
             None
         }
         public Dictionary<Intent, IntentScore> Intents;
 
         public class _Entities
         {
+            // Entities Declarations
             public string[][] Modulo;
+            public string[] ANIO_PRESUPUESTAL;
+            public string[] Id_Ticket;
+            public string[][] DESC_CUENTA;
+            public string[][] DESC_ESCUELAS;
+            public string[][] DESC_FUNCION;
+            public string[][] DESC_INSTITUCION;
+            public string[][] DESC_PRODUCTO;
+            public string[][] DESC_PROYECTO;
+            public string[][] DESC_REGION;
+            public string[][] DESC_UBICACION;
+            public string[][] TIPO_RETORNO;
 
+            // Modulo Instance
             public class _InstanceLuisModulo
             {
                 public InstanceData Modulo;
@@ -40,8 +60,138 @@ namespace CoreBot.CognitiveModels
                 public _InstanceLuisModulo _Instance;
             }
 
-            public string []Id_Ticket;
+            // ANIO_PRESUPUESTAL INSTANCE
+            public class _InstanceLuisANIO_PRESUPUESTAL
+            {
+                public InstanceData ANIO_PRESUPUESTAL;
+            }
 
+            public class LuisANIO_PRESUPUESTAL
+            {
+                public string[] ANIO_PRESUPUESTAL;
+                [JsonProperty("$instance")]
+                public _InstanceLuisANIO_PRESUPUESTAL _Instance;
+            }
+
+            // DESC_CUENTA INSTANCE
+            public class _InstanceLuisDESC_CUENTA
+            {
+                public InstanceData DESC_CUENTA;
+            }
+
+            public class LuisDESC_CUENTA
+            {
+                public string[] DESC_CUENTA;
+                [JsonProperty("$instance")]
+                public _InstanceLuisDESC_CUENTA _Instance;
+            }
+
+            // DESC_ESCUELAS INSTANCE
+            public class _InstanceLuisDESC_ESCUELAS
+            {
+                public InstanceData DESC_ESCUELAS;
+            }
+
+            public class LuisDESC_ESCUELAS
+            {
+                public string[] DESC_ESCUELAS;
+                [JsonProperty("$instance")]
+                public _InstanceLuisDESC_ESCUELAS _Instance;
+            }
+
+            // DESC_FUNCION INSTANCE
+            public class _InstanceLuisDESC_FUNCION
+            {
+                public InstanceData DESC_FUNCION;
+            }
+
+            public class LuisDESC_FUNCION
+            {
+                public string[] DESC_FUNCION;
+                [JsonProperty("$instance")]
+                public _InstanceLuisDESC_FUNCION _Instance;
+            }
+
+            // DESC_INSTITUCION INSTANCE
+            public class _InstanceLuisDESC_INSTITUCION
+            {
+                public InstanceData DESC_INSTITUCION;
+            }
+
+            public class LuisDESC_INSTITUCION
+            {
+                public string[] DESC_INSTITUCION;
+                [JsonProperty("$instance")]
+                public _InstanceLuisDESC_INSTITUCION _Instance;
+            }
+
+            // DESC_PRODUCTO INSTANCE
+            public class _InstanceLuisDESC_PRODUCTO
+            {
+                public InstanceData DESC_PRODUCTO;
+            }
+
+            public class LuisDESC_PRODUCTO
+            {
+                public string[] DESC_PRODUCTO;
+                [JsonProperty("$instance")]
+                public _InstanceLuisDESC_PRODUCTO _Instance;
+            }
+
+            // DESC_PROYECTO INSTANCE
+            public class _InstanceLuisDESC_PROYECTO
+            {
+                public InstanceData DESC_PROYECTO;
+            }
+
+            public class LuisDESC_PROYECTO
+            {
+                public string[] DESC_PROYECTO;
+                [JsonProperty("$instance")]
+                public _InstanceLuisDESC_PROYECTO _Instance;
+            }
+
+            // DESC_REGION INSTANCE
+            public class _InstanceLuisDESC_REGION
+            {
+                public InstanceData DESC_REGION;
+            }
+
+            public class LuisDESC_REGION
+            {
+                public string[] DESC_REGION;
+                [JsonProperty("$instance")]
+                public _InstanceLuisDESC_REGION _Instance;
+            }
+
+            // DESC_REGION INSTANCE
+            public class _InstanceLuisDESC_UBICACION
+            {
+                public InstanceData DESC_UBICACION;
+            }
+
+            public class LuisDESC_UBICACION
+            {
+                public string[] DESC_UBICACION;
+                [JsonProperty("$instance")]
+                public _InstanceLuisDESC_UBICACION _Instance;
+            }
+
+            // TIPO_RETORNO INSTANCE
+            public class _InstanceLuisTIPO_RETORNO
+            {
+                public InstanceData TIPO_RETORNO;
+            }
+
+            public class LuisTIPO_RETORNO
+            {
+                public string[] TIPO_RETORNO;
+                [JsonProperty("$instance")]
+                public _InstanceLuisTIPO_RETORNO _Instance;
+            }
+
+
+            // IDTICKET INSTANCE
             public class _InstanceLuisIdTicket
             {
                 public InstanceData Id_Ticket;
@@ -57,6 +207,15 @@ namespace CoreBot.CognitiveModels
             {
                 public InstanceData[] Modulo;
                 public InstanceData[] Id_Ticket;
+                public InstanceData[] DESC_CUENTA;
+                public InstanceData[] DESC_ESCUELAS;
+                public InstanceData[] DESC_FUNCION;
+                public InstanceData[] DESC_INSTITUCION;
+                public InstanceData[] DESC_PRODUCTO;
+                public InstanceData[] DESC_PROYECTO;
+                public InstanceData[] DESC_REGION;
+                public InstanceData[] DESC_UBICACION;
+                public InstanceData[] TIPO_RETORNO;
             }
             [JsonProperty("$instance")]
             public _Instance _instance;
