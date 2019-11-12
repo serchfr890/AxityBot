@@ -134,7 +134,14 @@ namespace CoreBot.Dialogs
                         break;
                     case BotAxity.Intent.Pregunta_1:
                         var DESC_ENTITY = luisResult.Entities.DESC_CUENTA[0];
-                        await stepContext.Context.SendActivityAsync(MessageFactory.Text("Entró a Pregunta 1"), cancellationToken);
+                        var msg = MessageFactory.Text("Pregunta 1");
+                        msg.Speak = "< speak version = \"1.0\" xmlns = \"https://www.w3.org/2001/10/synthesis\" xml: lang = \"es-MX\" >HOla perro</ speak >";
+                              await stepContext.Context.SendActivityAsync(msg, cancellationToken);
+                        
+
+
+
+
                         answerFromService = getAnswerFromQuestion1();
                         break;
                     case BotAxity.Intent.Pregunta_2:
@@ -218,6 +225,18 @@ namespace CoreBot.Dialogs
         private static string getAnswerFromQuestion7()
         {
             return "pregunta7";
+        }
+
+        public IActivity Speak(string message)
+        {
+            var activity = MessageFactory.Text(message);
+            string body = @"<speak version='1.0' xmlns='https://www.w3.org/2001/10/synthesis' xml:lang='es-MX'> 
+
+        <voice name='Microsoft Server Speech Text to Speech Voice (es-MX, JessaRUS)'>" +
+                $"{message}" + "</voice></speak>";
+
+            activity.Speak = body;
+            return activity;
         }
     }
 }

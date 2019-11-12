@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+   <body>
+      <div id="webchat" role="main"></div>
+      <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+      <script src="https://cdn.botframework.com/botframework-webchat/latest/CognitiveServices.js"></script>
+      <script>
+        const subscriptionKey = "7af784c1202d4917aa1cecf26f6597a1";
+        var webSpeechPonyfillFactory = window.WebChat.createCognitiveServicesSpeechServicesPonyfillFactory({
+                    region: 'southcentralus',
+                    voiceName: 'Microsoft Server Speech Text to Speech Voice (es-MX, JessaRUS)',
+                    speechSynthesisOutputFormat: 'audio-24khz-48kbitrate-mono-mp3',
+                    subscriptionKey
+                });
+            
+         botConnection = window.WebChat.createDirectLine({ secret: 'WWOPdDT1nUc.RoiBECcvJ91syMtliFLsXtHDNtr0F6nYrkpLzTduwhY' })
+         window.WebChat.renderWebChat(
+            {
+               directLine: botConnection,
+               userID: 'YOUR_USER_ID',
+               username: 'Web Chat User',
+               resize: 'detect',
+               locale: 'es-MX',
+               botAvatarInitials: 'WC',
+               userAvatarInitials: 'WW',
+               webSpeechPonyfillFactory
+               
+            },
+            document.getElementById('webchat')
+         );
+      </script>
+   </body>
+</html>
